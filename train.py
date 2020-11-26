@@ -9,16 +9,16 @@ import pickle
 import datetime
 from wavegan import *
 from utils import *
-from logger import *
+# from logger import *
 cuda = True if torch.cuda.is_available() else False
 
 
 # =============Logger===============
-LOGGER = logging.getLogger('wavegan')
-LOGGER.setLevel(logging.DEBUG)
+# LOGGER = logging.getLogger('wavegan')
+# LOGGER.setLevel(logging.DEBUG)
 
-LOGGER.info('Initialized logger.')
-init_console_logger(LOGGER)
+print('Initialized logger.')
+# init_console_logger(LOGGER)
 
 # =============Parameters===============
 args = parse_arguments()
@@ -58,13 +58,13 @@ if cuda:
 sample_noise_Var = autograd.Variable(sample_noise, requires_grad=False)
 
 # Save config.
-LOGGER.info('Saving configurations...')
+print('Saving configurations...')
 config_path = os.path.join(model_dir, 'config.json')
 with open(config_path, 'w') as f:
     json.dump(args, f)
 
 # Load data.
-LOGGER.info('Loading audio data...')
+print('Loading audio data...')
 audio_paths = get_all_audio_filepaths(audio_dir)
 train_data, valid_data, test_data, train_size = split_data(audio_paths, args['valid_ratio'],
                                                            args['test_ratio'], batch_size)
@@ -85,9 +85,9 @@ D_wasses_valid = []
 G_costs = []
 
 start = time.time()
-LOGGER.info('Starting training...EPOCHS={}, BATCH_SIZE={}, BATCH_NUM={}'.format(epochs, batch_size, BATCH_NUM))
+print('Starting training...EPOCHS={}, BATCH_SIZE={}, BATCH_NUM={}'.format(epochs, batch_size, BATCH_NUM))
 for epoch in range(1, epochs+1):
-    LOGGER.info("{} Epoch: {}/{}".format(time_since(start), epoch, epochs))
+    print("{} Epoch: {}/{}".format(time_since(start), epoch, epochs))
 
     D_cost_train_epoch = []
     D_wass_train_epoch = []
@@ -207,8 +207,8 @@ for epoch in range(1, epochs+1):
             G_cost = G_cost.cpu()
         G_cost_epoch.append(G_cost.data.numpy())
 
-        if i % (BATCH_NUM // 5) == 0:
-            LOGGER.info("{} Epoch={} Batch: {}/{} D_c:{:.4f} | D_w:{:.4f} | G:{:.4f}".format(time_since(start), epoch,
+        if i % (BATCH_NUM / 5) == 0:
+            print("{} Epoch={} Batch: {}/{} D_c:{:.4f} | D_w:{:.4f} | G:{:.4f}".format(time_since(start), epoch,
                                                                                              i, BATCH_NUM,
                                                                                              D_cost_train.data.numpy(),
                                                                                              D_wass_train.data.numpy(),
