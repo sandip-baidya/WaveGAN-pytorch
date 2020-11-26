@@ -227,7 +227,7 @@ for epoch in range(1, epochs+1):
     D_wasses_valid.append(D_wass_valid_epoch_avg)
     G_costs.append(G_cost_epoch_avg)
 
-    LOGGER.info("{} D_cost_train:{:.4f} | D_wass_train:{:.4f} | D_cost_valid:{:.4f} | D_wass_valid:{:.4f} | "
+    print("{} D_cost_train:{:.4f} | D_wass_train:{:.4f} | D_cost_valid:{:.4f} | D_wass_valid:{:.4f} | "
                 "G_cost:{:.4f}".format(time_since(start),
                                        D_cost_train_epoch_avg,
                                        D_wass_train_epoch_avg,
@@ -237,7 +237,7 @@ for epoch in range(1, epochs+1):
 
     # Generate audio samples.
     if epoch % epochs_per_sample == 0:
-        LOGGER.info("Generating samples...")
+        print("Generating samples...")
         sample_out = netG(sample_noise_Var)
         if cuda:
             sample_out = sample_out.cpu()
@@ -247,21 +247,21 @@ for epoch in range(1, epochs+1):
     # TODO
     # Early stopping by Inception Score(IS)
 
-LOGGER.info('>>>>>>>Training finished !<<<<<<<')
+print('>>>>>>>Training finished !<<<<<<<')
 
 # Save model
-LOGGER.info("Saving models...")
+print("Saving models...")
 netD_path = os.path.join(output_dir, "discriminator.pkl")
 netG_path = os.path.join(output_dir, "generator.pkl")
 torch.save(netD.state_dict(), netD_path, pickle_protocol=pickle.HIGHEST_PROTOCOL)
 torch.save(netG.state_dict(), netG_path, pickle_protocol=pickle.HIGHEST_PROTOCOL)
 
 # Plot loss curve.
-LOGGER.info("Saving loss curve...")
-plot_loss(D_costs_train, D_wasses_train,
-          D_costs_valid, D_wasses_valid, G_costs, output_dir)
+# print("Saving loss curve...")
+# plot_loss(D_costs_train, D_wasses_train,
+#           D_costs_valid, D_wasses_valid, G_costs, output_dir)
 
-LOGGER.info("All finished!")
+print("All finished!")
 
 
 
