@@ -48,7 +48,10 @@ def save_samples(epoch_samples, epoch, output_dir, fs=16000):
 
     for idx, sample in enumerate(epoch_samples):
         output_path = os.path.join(sample_dir, "{}.wav".format(idx+1))
+        print("sample length",len(sample))
         sample = sample[0]
+        print("sample contains")
+        print(sample.shape)
 #         librosa.output.write_wav(output_path, sample, fs)
         sf.write(output_path,sample,fs)
 
