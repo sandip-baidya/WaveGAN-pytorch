@@ -3,7 +3,7 @@ import time
 import math
 import torch
 import random
-import logging
+# import logging
 import librosa
 import argparse
 import pescador
@@ -14,10 +14,12 @@ from torch.autograd import Variable
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
+import soundfile as sf
 
 
-LOGGER = logging.getLogger('wavegan')
-LOGGER.setLevel(logging.DEBUG)
+# 
+# GER = logging.getLogger('wavegan')
+# LOGGER.setLevel(logging.DEBUG)
 
 
 def make_path(output_path):
@@ -47,7 +49,8 @@ def save_samples(epoch_samples, epoch, output_dir, fs=16000):
     for idx, sample in enumerate(epoch_samples):
         output_path = os.path.join(sample_dir, "{}.wav".format(idx+1))
         sample = sample[0]
-        librosa.output.write_wav(output_path, sample, fs)
+#         librosa.output.write_wav(output_path, sample, fs)
+        sf.write(output_path,sample,fs)
 
 
 # Adapted from @jtcramer https://github.com/jtcramer/wavegan/blob/master/sample.py.
@@ -63,7 +66,7 @@ def sample_generator(filepath, window_length=16384, fs=16000):
         if max_mag > 1:
             audio_data /= max_mag
     except Exception as e:
-        LOGGER.error("Could not load {}: {}".format(filepath, str(e)))
+        print("Could not load {}: {}".format(filepath, str(e)))
         raise StopIteration
 
     # Pad audio to >= window_length.
@@ -118,7 +121,7 @@ def split_data(audio_path_list, valid_ratio, test_ratio, batch_size):
     num_train = num_files - num_valid - num_test
 
     if not (num_valid > 0 and num_test > 0 and num_train > 0):
-        LOGGER.error("Please download DATASET '{}' and put it under current path !".format(DATASET_NAME))
+        print("Please download DATASET '{}' and put it under current path !".format(DATASET_NAME))
 
     # Random shuffle the audio_path_list for splitting.
     random.shuffle(audio_path_list)
