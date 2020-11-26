@@ -7,4 +7,5 @@ SAMPLE_NUM = 10  # Generate 10 samples every sample generation.
 
 # Data
 DATASET_NAME = 'sc09/'
-OUTPUT_PATH = "output/"
+# OUTPUT_PATH = "output/"
+OUTPUT_PATH = "../input/piano-dataset"
